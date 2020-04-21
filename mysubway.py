@@ -43,7 +43,6 @@ def select_item(item_title, item_list, max_items, choice_required):
             response = ask_choice(item_title, item_list, max_items - choices_made, "YOU MUST CHOOSE AT LEAST ONE {}".format(item_title))
     prolog.assertz("{}_chosen({})".format(item_title, response))
     item_list = find_and_remove(item_list, response)
-    # print("pajibat Response = ", response)
     choices_made = choices_made + 1
 
     # if user selects item, keep asking for more
