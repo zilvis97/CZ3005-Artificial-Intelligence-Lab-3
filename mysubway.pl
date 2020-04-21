@@ -18,8 +18,6 @@ meal_choice(X) :-
 bread_choice(X) :-
     breads(L), member(X, L).
 
-meal_chosen(standard).
-
 /* findall(Object,Goal,List). */
 meat_options(X) :- findall(X, (\+meal_chosen(vegetarian), meats(X)), X). /* returns list of possible options, empty list if doesnt match criterias */
 meat_list(X) :- meat_options(L), member(X, L). /*  */
