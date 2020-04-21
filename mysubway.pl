@@ -12,29 +12,27 @@ sauces([chipotle, mayonaise, bbq, creamy_italian, caesar]).
 healthy_sauces([oil, mustard, onion]).
 addons([drink, chips, cookie]).
 
-meal_choice(X) :-
-    meals(L), member(X, L).
+meal_choice(X) :- meals(L), member(X, L).
 
-bread_choice(X) :-
-    breads(L), member(X, L).
+bread_choice(X) :- breads(L), member(X, L).
+
+veggie_choice(X) :- veggies(L), member(X, L).
+
+cheese_choice(X) :- cheese(L), member(X, L).
 
 /* findall(Object,Goal,List). */
+/* filter possible choices available depending on meal option selected */
 meat_options(X) :- findall(X, (\+meal_chosen(vegetarian), meats(X)), X). /* returns list of possible options, empty list if doesnt match criterias */
 meat_list(X) :- meat_options(L), member(X, L). /*  */
 meat_choice(X) :- meat_list(L), member(X, L).
 
-veggie_choice(X) :-
-    veggies(L), member(X, L).
-
-cheese_choice(X) :-
-    cheese(L), member(X, L).
-
+/* filter possible choices available depending on meal option selected */
 sauce_options(X) :- findall(X, (meal_chosen(healthy) -> healthy_sauces(X);
 							sauces(S), healthy_sauces(H), append(S, H, X)), X).
 sauce_list(X) :- sauce_options(L), member(X, L).
 sauce_choice(X) :- sauce_list(L), member(X, L).
 
-
+/* filter possible choices available depending on meal option selected */
 addons_options(X) :- findall(X, (\+meal_chosen(value), \+meal_chosen(healthy), addons(X)), X).
 addons_list(X) :- addons_options(L), member(X, L).
 addons_choice(X) :- addons_list(L), member(X, L).

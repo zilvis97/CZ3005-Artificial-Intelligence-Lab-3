@@ -17,19 +17,13 @@ def ask_wanted(item_title, max_items, append_msg):
                              .format(append_msg, item_title, max_items, item_title), choices=['yes', 'next'],
                              title="Subway Order")
 
-# def ask_choice(item_title, item, choices_left):
-#     return easygui.choicebox(msg="Please chose your {}\nYou have {} choices left\nDo you want {}?\nPress 'next' to choose other item"
-#                              .format(item_title, choices_left, item),
-#                              choices=['yes', 'no', 'next'], title="Subway Order")
-
-
 #displays menu choices
 def ask_choice(item_title, item_list, choices_left, append_msg):
     choice_list = []
     for el in item_list:
         choice_list.append(el['X'])
     choice_list.append('next')
-    return easygui.choicebox(msg="{}\nPlease chose your {}\nYou have {} choices left\nPress 'next' to choose other item"
+    return easygui.choicebox(msg="{}\nPlease choose your {}\nYou have {} choices left\nPress 'next' to choose other item"
                              .format(append_msg, item_title, choices_left),
                              choices=choice_list, title="Subway Order")
 
@@ -71,7 +65,6 @@ def select_item(item_title, item_list, max_items, choice_required):
 
 def order_item(item_title, max_count, choice_required):
     item_list = list(prolog.query("{}_choice(X)".format(item_title)))
-    # print(item_list)
 
     # initially set chosen as null
     prolog.assertz("{}_chosen(null)".format(item_title))
@@ -132,10 +125,12 @@ def ordering():
         print_choices(prepare_choice_list("sauce"), "Sauce")
         print_choices(prepare_choice_list("addons"), "Addons")
 
+#get a list of all chosen objects and filter it if its not empty
 def prepare_choice_list(item_name):
     choice_list = list(prolog.query("{}_chosen(X)".format(item_name)))
     return choice_list[1:] if len(choice_list) > 1 else choice_list
 
+#print the lists
 def print_choices(product_list, product_name):
     print(product_name, "choice:", end = " ")
     # print("Array size = ", len(product_list))
@@ -146,6 +141,5 @@ def print_choices(product_list, product_name):
             print(el['X'], end = " ")
     print()
 
-# Run the main program
 if __name__ == "__main__":
 	main()
