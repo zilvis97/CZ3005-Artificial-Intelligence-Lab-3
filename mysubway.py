@@ -72,6 +72,9 @@ def select_item(item_title, item_list, max_items, choice_required):
 def order_item(item_title, max_count, choice_required):
     item_list = list(prolog.query("{}_choice(X)".format(item_title)))
     # print(item_list)
+
+    # initially set chosen as null
+    prolog.assertz("{}_chosen(null)".format(item_title))
     if item_list == []:
         order_counter()
         return
@@ -84,8 +87,6 @@ def order_item(item_title, max_count, choice_required):
         if(response == "yes" or not choice_required):
             break
 
-    # initially set chosen as null
-    prolog.assertz("{}_chosen(null)".format(item_title))
     if (response == 'yes'):
         select_item(item_title, item_list, max_count, choice_required)
         order_counter()
@@ -122,32 +123,25 @@ def ordering():
 
     # print all choices
     if(order_count == 8):
-        meal_chosen = prepare_choice_list(list(prolog.query("meal_chosen(X)")))
-        bread_chosen = prepare_choice_list(list(prolog.query("bread_chosen(X)")))
-        meat_chosen = prepare_choice_list(list(prolog.query("meat_chosen(X)")))
-        veggie_chosen = prepare_choice_list(list(prolog.query("veggie_chosen(X)")))
-        cheese_chosen = prepare_choice_list(list(prolog.query("cheese_chosen(X)")))
-        sauce_chosen = list(prolog.query("sauce_chosen(X)"))
-        addons_chosen = list(prolog.query("addons_chosen(X)"))
         print("\---  YOUR ORDER  ---/")
-        print_choices(meal_chosen, "Meal")
-        print_choices(list(prolog.query("bread_chosen(X)"))[1:], "Bread")
-        print_choices(list(prolog.query("meat_chosen(X)"))[1:], "Meat")
-        print_choices(list(prolog.query("veggie_chosen(X)"))[1:], "Veggie")
-        print_choices(list(prolog.query("cheese_chosen(X)"))[1:], "Cheese")
-        print_choices(list(prolog.query("sauce_chosen(X)"))[1:], "Sauce")
-        print_choices(list(prolog.query("addons_chosen(X)"))[1:], "Addons")
+        print_choices(prepare_choice_list("meal"), "Meal")
+        print_choices(prepare_choice_list("bread"), "Bread")
+        print_choices(prepare_choice_list("meat"), "Meat")
+        print_choices(prepare_choice_list("veggie"), "Veggie")
+        print_choices(prepare_choice_list("cheese"), "Cheese")
+        print_choices(prepare_choice_list("sauce"), "Sauce")
+        print_choices(prepare_choice_list("addons"), "Addons")
 
 def prepare_choice_list(item_name):
-    list = list(prolog.query("{}_chosen(X)".format(item_name)))
-    return list[1:] if len(list) > 1 else list
+    choice_list = list(prolog.query("{}_chosen(X)".format(item_name)))
+    return choice_list[1:] if len(choice_list) > 1 else choice_list
 
 def print_choices(product_list, product_name):
     print(product_name, "choice:", end = " ")
     # print("Array size = ", len(product_list))
     for el in product_list:
         if(el['X'] == "null"):
-            print("NA")
+            print("NA", end = " ")
         else:
             print(el['X'], end = " ")
     print()
